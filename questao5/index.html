@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questão 5</title>
+</head>
+
+<body>
+    <p>Digite a descrição ou parte do modelo:</p>
+    <input type="text" value="FUSION TITANIUM ECOBO AUT." style="width: 400px;"></input>
+    <button id="btnFiltrar">Filtrar</button>
+    <div id="divModelos"></div>
+</body>
+
+<script>
+
+    let listaDeModelos = ["1. FORD - FUSION 2.5L I-VCT FLEX AUTOMATICO",
+                          "2. FORD - FUSION FWD 3.0 V6",
+                          "3. FORD - FUSION HYBRID 2.5 AUTOMATICO",
+                          "4. FORD - FUSION SEL 2.0 ECOBO. 16V 248CV AUT. (4 Portas)", 
+                          "5. FORD - FUSION SEL 2.3 16V AUTOMATICO",
+                          "6. FORD - FUSION SEL 2.5 16V AUTOMATICO",
+                          "7. FORD - FUSION SEL 3.0 V6 24V 243CV AUTOMATICO",
+                          "8. FORD - FUSION SEL 3.0 V6 AWD 24V 243 CV AUTOMATICO",
+                          "9. FORD - FUSION TITANIUM 2.0 GTDI ECOBO FWD AUTOMATICO",
+                          "10.FORD - FUSION TITANIUM AWD 2.0 16V GTDI TURBO AUTOMATICO", 
+                          "11.FORD - FUSION TITANIUM HYBRID 2.0 145CV AUT. AUTOMATICO"];
+
+    function NormalizarEntrada(valor){
+        return valor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+    }
+
+    function semelhancaModelo(arrayModeloEntrada, modelo){
+        let pontuacao = 0;
+
+        arrayModeloEntrada.forEach((descricao) => {            
+            if(modelo.includes(descricao)) pontuacao++;
+        });
+        
+        return pontuacao;
+    }
+
+    function filtrarModelo(){
+        let filtro = document.querySelector("input").value.trim();
+        filtro = NormalizarEntrada(filtro);
+        let arrayModeloEntrada = filtro.split(" ");
+        let modeloMaisSemelhante = 0;
+        let modelosFiltrados = [];
+               
+        listaDeModelos.forEach(modelo => {            
+            let semelhancaAtual = semelhancaModelo(arrayModeloEntrada, modelo);
+
+            if(semelhancaAtual > modeloMaisSemelhante){
+                modelosFiltrados = [];
+                modeloMaisSemelhante = semelhancaAtual;
+                modelosFiltrados.push(modelo);
+            }
+            else if(semelhancaAtual == modeloMaisSemelhante && semelhancaAtual > 0){
+                modelosFiltrados.push(modelo);
+            }
+        });
+      
+      console.log(modelosFiltrados);
+      return modelosFiltrados;
+    }
+
+    function mostrarModelosFiltrados(){
+        let modelos = filtrarModelo();
+        let msg = document.querySelector("input").value;
+        let divModelos = document.querySelector("#divModelos");
+        divModelos.innerHTML = "";
+
+        modelos.forEach( modelo => {
+            let h5 = document.createElement("h5");
+            h5.innerText = modelo;
+            divModelos.appendChild(h5);
+        });
+    }
+
+    document.getElementById("btnFiltrar").addEventListener("click", mostrarModelosFiltrados);
+    
+    </script>
+</html>

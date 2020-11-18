@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Questão 3</title>
+    </head>
+
+    <body>
+        <p>Digite a mensagem:</p>
+        <input type="text"></input>
+        <button id="btnVerificarMsg">Verificar</button>
+        <div id="divMsg"></div>
+    </body>
+
+    <script>
+        function removerCaracteresRepetidos(msg){
+            return new Set(msg.split(""));
+        }
+
+        function pegarLetrasComMaiorQuantidadeMensagem(msg){
+            
+            let maiorOcorrencia = 0;
+            let msgRetorno = [];
+            let letrasUnicas = removerCaracteresRepetidos(msg);
+
+            letrasUnicas.forEach(letra => {
+                let qtdLetras = msg.match(new RegExp(letra, "g")).length;
+
+                if(qtdLetras >= maiorOcorrencia){
+
+                    if(qtdLetras > maiorOcorrencia){
+                        msgRetorno = [];
+                        maiorOcorrencia = qtdLetras;                    
+                    }
+
+                    msgRetorno.push(`Ocorrência de '${letra}' = ${maiorOcorrencia}`);
+                }
+            });
+
+            return msgRetorno;
+        }
+
+        function mostrarLetrasComMaiorQuantidadeMensagem(){
+
+            let msg = document.querySelector("input").value.trim();
+            let mensagem = pegarLetrasComMaiorQuantidadeMensagem(msg);
+            let divApp = document.querySelector("#divMsg");
+            divMsg.innerHTML = "";
+
+            mensagem.forEach( msg => {
+                let h5 = document.createElement("h5");
+                h5.innerText = msg;
+                divMsg.appendChild(h5);
+            });
+        }
+
+        document.getElementById("btnVerificarMsg").addEventListener("click", mostrarLetrasComMaiorQuantidadeMensagem);
+    </script>
+</html>
